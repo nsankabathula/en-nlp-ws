@@ -98,7 +98,7 @@ class CommonDao {
         return new Promise(function (resolve, reject) {
             let stmt = that.db.prepare(sqlRequest);
             stmt.run(sqlParams, function (err) {
-                console.log(this);
+                //console.log(this);
                 if (this.changes === 1) {
                     resolve(sqlParams);
                 } else if (this.changes === 0) {
