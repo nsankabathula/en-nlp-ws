@@ -1,5 +1,6 @@
-const metaDataRoutes = require('./meta');
-const trainingRoutes = require('./training');
+const MetaDataRoutes = require('./meta');
+const TrainingRoutes = require('./trainingRoutes');
+const PythonRoutes = require('./pythonRoutes');
 
 const CommonDao = require('../core/commonDao');
 const CommonController = require('../core/commonController');
@@ -10,6 +11,8 @@ const TrainingController = require('../controller/trainingController');
 const MetaDao = require('../dao/metaDao');
 const MetaController = require('../controller/metaController');
 
+const PythonController = require('../controller/pythonController');
+
 module.exports = function (app, db) {
 
     commonDao = new CommonDao(db);
@@ -17,8 +20,9 @@ module.exports = function (app, db) {
     trainingDao = new TrainingDao(commonDao);
     metaDao = new MetaDao(commonDao)
 
-    trainingRoutes(app, new TrainingController(trainingDao, commonController));
-    metaDataRoutes(app, new MetaController(metaDao, commonController));
+    TrainingRoutes(app, new TrainingController(trainingDao, commonController));
+    MetaDataRoutes(app, new MetaController(metaDao, commonController));
+    PythonRoutes(app, new PythonController(commonController));
     //adminRoutes(app, db);
     // Other route groups could go here, in the future
 };
