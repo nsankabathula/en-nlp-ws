@@ -24,7 +24,6 @@ class TrainingController {
 
     findByFileName(req, res) {
         let that = this;
-        console.debug("findByFileName")
         that.dao.findById(req.params.fileName)
             .then(that.controller.findSuccess(res))
             .catch(that.controller.findError(res));
@@ -33,31 +32,36 @@ class TrainingController {
 
     findByLineId(req, res) {
         let that = this;
-        console.debug("findByLineId")
         that.dao.findByIds(req.params.fileName, req.params.lineId)
             .then(that.controller.findSuccess(res))
             .catch(that.controller.findError(res));
 
     }
-
-    update(req, res) {
-
-
+    compare(req, res) {
         let that = this;
-
-
-        return that.dao.update(req.params.fileName, req.params.lineId, req.params.target)
-            .then(that.controller.editSuccess(res))
-            .catch(that.controller.serverError(res));
-
+        that.dao.compare(req.params.fileName)
+            .then(that.controller.findSuccess(res))
+            .catch(that.controller.findError(res));
 
     }
 
-    delete(req, res) {
-
+    merge(req, res) {
 
         let that = this;
+        return that.dao.update(req.params.fileName)
+            .then(that.controller.editSuccess(res))
+            .catch(that.controller.serverError(res));
+    }
 
+    update(req, res) {
+        let that = this;
+        return that.dao.update(req.params.fileName, req.params.lineId, req.params.target)
+            .then(that.controller.editSuccess(res))
+            .catch(that.controller.serverError(res));
+    }
+
+    delete(req, res) {
+        let that = this;
         return that.dao.delete(req.params.fileName)
             .then(that.controller.deleteSuccess(res))
             .catch(that.controller.serverError(res));

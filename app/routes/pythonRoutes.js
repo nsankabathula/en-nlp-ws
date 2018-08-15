@@ -4,7 +4,12 @@ var PythonShell = require("python-shell");
 module.exports = function (app, controller) {
     const defaultRoute = "/python/"
 
-    app.get(defaultRoute + ":pythonFileName" + "/" + ":fileName", (req, res) => {
+    app.get(defaultRoute + ":pythonFileName" + "/test/" + ":fileName", (req, res) => {
+        controller.run(req, res);
+    }
+    )
+
+    app.post(defaultRoute + ":pythonFileName" + "/" + ":fileName", (req, res) => {
         controller.run(req, res);
     }
     )

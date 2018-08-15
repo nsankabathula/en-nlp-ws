@@ -17,10 +17,12 @@ module.exports = function (app, db) {
 
     commonDao = new CommonDao(db);
     commonController = new CommonController();
-    trainingDao = new TrainingDao(commonDao);
+    trainingDao = new TrainingDao(commonDao, "training_data");
+    predictionDao = new TrainingDao(commonDao, "predicted_data");
     metaDao = new MetaDao(commonDao)
 
-    TrainingRoutes(app, new TrainingController(trainingDao, commonController));
+    TrainingRoutes(app, new TrainingController(trainingDao, commonController), "training");
+    TrainingRoutes(app, new TrainingController(predictionDao, commonController), "prediction");
     MetaDataRoutes(app, new MetaController(metaDao, commonController));
     PythonRoutes(app, new PythonController(commonController));
     //adminRoutes(app, db);
