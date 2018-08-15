@@ -48,7 +48,7 @@ class TrainingController {
     merge(req, res) {
 
         let that = this;
-        return that.dao.update(req.params.fileName)
+        return that.dao.merge(req.params.fileName)
             .then(that.controller.editSuccess(res))
             .catch(that.controller.serverError(res));
     }

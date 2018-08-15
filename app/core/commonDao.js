@@ -99,7 +99,7 @@ class CommonDao {
             let stmt = that.db.prepare(sqlRequest);
             stmt.run(sqlParams, function (err) {
                 //console.log(this);
-                if (this.changes === 1) {
+                if (this.changes > 0) {
                     resolve(sqlParams);
                 } else if (this.changes === 0) {
                     reject(

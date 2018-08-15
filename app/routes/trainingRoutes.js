@@ -22,7 +22,8 @@ module.exports = function (app, controller, routeName) {
 
     });
 
-    app.post(defaultRoute + ":fileName" + "/", (req, res) => {
+    app.post(defaultRoute + ":fileName" + "/merge", (req, res) => {
+        console.log("Request for merge.. ");
         controller.merge(req, res);
     });
 
