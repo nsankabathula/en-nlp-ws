@@ -1,6 +1,11 @@
 var PythonShell = require("python-shell");
-const PYTHON_FILE_DIR = "c:/Users/nsankabathula/dev/jscript/sqllite-node/app/controller/";
-const SQLLITE_DIR = "c:/Users/nsankabathula/dev/jscript/sqllite-node/app/data/";
+const PYTHON_FILE_DIR = "/home/paperspace/dev/sqllite-node/app/controller/";
+const SQLLITE_DIR = "/home/paperspace/dev/sqllite-node/app/data/";
+
+PythonShell.defaultOptions = {
+    //scriptPath: '/home/paperspace/dev/en-nlp/rcare/'
+    scriptPath: '/home/paperspace/dev/en-nlp/rcare'
+};
 
 class PythonController {
 
@@ -9,19 +14,25 @@ class PythonController {
     }
 
     run(req, res) {
-        console.log(__dirname);
-        var options = {
+                var options = {
             args:
                 [
                     req.params.fileName,
-                    SQLLITE_DIR
+                    SQLLITE_DIR,                    
                 ]
         }
-
-        PythonShell.run(PYTHON_FILE_DIR + req.params.pythonFileName, options, function (err, data) {
+        
+        PythonShell.run(req.params.pythonFileName, options, function (err, data) {            
+            data = (data)? data: {"empty" : true}
             console.log(data)
             if (err) res.send(err);
-            res.send(data)
+            try{
+                res.send(data)
+            }
+            catch(ex){
+                console.error(ex)
+            }
+            
         });
     }
 }
