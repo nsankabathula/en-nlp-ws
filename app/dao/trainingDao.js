@@ -32,7 +32,7 @@ class TrainingDao {
     }
 
     findById(fileName) {
-        const QUERY = util.format("select line_id, debug, target, line_is_first_token_cardinal_0 firstTokenCardinal  from \
+        const QUERY = util.format("select line_id, debug, target  from \
                         %s where name = $fileName order by line_id ", this.tableName);
         var sqlParams = { $fileName: fileName };
         return this.commonDao.findAllWithParams(
@@ -46,7 +46,7 @@ class TrainingDao {
 
     compare(fileName) {
 
-        const QUERY = "select t1.debug ,  t1.line_id, t1.line_is_first_token_cardinal_0 firstTokenCardinal, t1.target, t2.target predict \
+        const QUERY = "select t1.debug ,  t1.line_id, t1.target, t2.target predict \
                         from training_data t1 join predicted_data t2 on t1.line_id = t2.line_id and t1.name = t2.name \
                         where t1.name = $fileName order by t1.line_id asc"
         var sqlParams = { $fileName: fileName };
@@ -62,7 +62,7 @@ class TrainingDao {
 
 
     findByIds(fileName, lineId) {
-        const QUERY = util.format("select line_id, debug, target, line_is_first_token_cardinal_0 firstTokenCardinal from \
+        const QUERY = util.format("select line_id, debug, target from \
         %s where name = $fileName  and line_id = $lineId order by line_id ", this.tableName);
         var sqlParams = { $fileName: fileName, $lineId: lineId };
 
