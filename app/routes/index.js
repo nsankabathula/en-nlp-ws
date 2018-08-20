@@ -1,6 +1,7 @@
 const MetaDataRoutes = require('./meta');
 const TrainingRoutes = require('./trainingRoutes');
 const PythonRoutes = require('./pythonRoutes');
+const FileMetaRoutes = require('./fileMetaRoutes');
 
 const CommonDao = require('../core/commonDao');
 const CommonController = require('../core/commonController');
@@ -12,6 +13,9 @@ const MetaDao = require('../dao/metaDao');
 const MetaController = require('../controller/metaController');
 
 const PythonController = require('../controller/pythonController');
+
+const FileMetaDataDao = require('../dao/fileMetaDataDao');
+const FileMetaController = require('../controller/fileMetaController');
 
 module.exports = function (app, db) {
 
@@ -25,6 +29,7 @@ module.exports = function (app, db) {
     TrainingRoutes(app, new TrainingController(predictionDao, commonController), "prediction");
     MetaDataRoutes(app, new MetaController(metaDao, commonController));
     PythonRoutes(app, new PythonController(commonController));
+    FileMetaRoutes(app, new FileMetaController(new FileMetaDataDao(commonDao), commonController));
     //adminRoutes(app, db);
     // Other route groups could go here, in the future
 };
