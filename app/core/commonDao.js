@@ -55,7 +55,7 @@ class CommonDao {
         return new Promise(function (resolve, reject) {
             let stmt = that.db.prepare(sqlRequest);
             stmt.all(sqlParams, function (err, rows) {
-                console.debug(err, rows)
+                //console.debug(err, rows)
                 if (err) {
                     reject(
                         new DaoError(11, "Invalid arguments", sqlRequest, sqlParams)
@@ -65,7 +65,7 @@ class CommonDao {
                         new DaoError(21, "Entity not found ", sqlRequest, sqlParams)
                     );
                 } else {
-                    console.debug(rows)
+                    //console.debug(rows)
                     let row = rows[0];
                     resolve(row);
                 }
