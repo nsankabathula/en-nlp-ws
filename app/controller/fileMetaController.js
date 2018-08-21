@@ -7,7 +7,7 @@ class FileMetaController {
 
     findAll(req, res) {
         let that = this;
-        that.dao.findAll()
+        that.dao.findAll(req.params.useforTraining)
             .then(that.controller.findSuccess(res))
             .catch(that.controller.findError(res));
 

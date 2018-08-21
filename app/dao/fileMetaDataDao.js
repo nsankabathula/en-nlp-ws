@@ -8,11 +8,12 @@ class FileMetaDataDao {
         this.tableName = "meta_data";
     }
 
-    findAll() {
+    findAll(useforTraining) {
         const QUERY = util.format("select txt_file_name txtFileName,  txt_file_path txtFilePath, line_count lineCount, use_for_training useforTraining \
-                        from %s order by txt_file_name asc", this.tableName);
-        return this.commonDao.findAll(
-            QUERY
+                        from %s  WHERE use_for_training = $useforTraining order by txt_file_name asc", this.tableName);
+        var sqlParams = { $useforTraining: useforTraining };
+        return this.commonDao.findAllWithParams(
+            QUERY, sqlParams
         ).then(
             rows => {
                 return rows;
