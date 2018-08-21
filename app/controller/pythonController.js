@@ -27,7 +27,8 @@ class PythonController {
             var options = {
                 args:
                     [
-                        result.txtFilePath,
+                        result.txtFileName,
+                        result.fileLocation,
                         SQLLITE_DIR,
                     ]
             }
