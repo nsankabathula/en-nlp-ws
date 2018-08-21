@@ -3,37 +3,50 @@ const PYTHON_FILE_DIR = "/home/paperspace/dev/sqllite-node/app/controller/";
 const SQLLITE_DIR = "/home/paperspace/dev/sqllite-node/app/data/";
 
 PythonShell.defaultOptions = {
-    //scriptPath: '/home/paperspace/dev/en-nlp/rcare/'
-    scriptPath: '/home/paperspace/dev/en-nlp/rcare'
+    //scriptPath: '/home/paperspace/dev/en-nlp/rcare'
+    scriptPath: 'C:\\Users\\nsankabathula\\dev\\jscript\\sqllite-node\\app\\controller\\'
 };
 
 class PythonController {
 
-    constructor(contoller) {
+    constructor(dao, contoller) {
+        this.dao = dao;
         this.controller = contoller
     }
 
     run(req, res) {
-                var options = {
-            args:
-                [
-                    req.params.fileName,
-                    SQLLITE_DIR,                    
-                ]
+        var that = this;
+        that.dao.findOne(req.params.fileName)
+            .then(that.tryExecutingPython(req.params.pythonFileName, res))
+            .catch(that.controller.findError(res));
+    }
+
+    tryExecutingPython(pythonFileName, res, result) {
+        console.log(result)
+        return (result) => {
+            var options = {
+                args:
+                    [
+                        result.txtFilePath,
+                        SQLLITE_DIR,
+                    ]
+            }
+
+            PythonShell.run(pythonFileName, options, function (err, data) {
+                data = (data) ? data : { "empty": true }
+                console.log("python result", data)
+                if (err) this.controller.serverError(res);
+                try {
+                    res.status(200); // Found
+                    res.json(data)
+                }
+                catch (ex) {
+                    this.controller.serverError(res)
+                }
+
+            });
+
         }
-        
-        PythonShell.run(req.params.pythonFileName, options, function (err, data) {            
-            data = (data)? data: {"empty" : true}
-            console.log(data)
-            if (err) res.send(err);
-            try{
-                res.send(data)
-            }
-            catch(ex){
-                console.error(ex)
-            }
-            
-        });
     }
 }
 

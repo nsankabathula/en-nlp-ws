@@ -24,12 +24,13 @@ module.exports = function (app, db) {
     trainingDao = new TrainingDao(commonDao, "training_data");
     predictionDao = new TrainingDao(commonDao, "predicted_data");
     metaDao = new MetaDao(commonDao)
+    fileMetaDao = new FileMetaDataDao(commonDao);
 
     TrainingRoutes(app, new TrainingController(trainingDao, commonController), "training");
     TrainingRoutes(app, new TrainingController(predictionDao, commonController), "prediction");
     MetaDataRoutes(app, new MetaController(metaDao, commonController));
-    PythonRoutes(app, new PythonController(commonController));
-    FileMetaRoutes(app, new FileMetaController(new FileMetaDataDao(commonDao), commonController));
+    PythonRoutes(app, new PythonController(fileMetaDao, commonController));
+    FileMetaRoutes(app, new FileMetaController(fileMetaDao, commonController));
     //adminRoutes(app, db);
     // Other route groups could go here, in the future
 };
