@@ -17,11 +17,11 @@ class PythonController {
     run(req, res) {
         var that = this;
         that.dao.findOne(req.params.fileName)
-            .then(that.tryExecutingPython(req.params.pythonFileName, res))
+            .then(that.tryExecutingPython(req.params.pythonFileName,req.params.tableName, res))
             .catch(that.controller.findError(res));
     }
 
-    tryExecutingPython(pythonFileName, res, result) {
+    tryExecutingPython(pythonFileName, tableName, res, result) {
         //console.log(result)
         return (result) => {
             var options = {
@@ -30,19 +30,25 @@ class PythonController {
                         result.txtFileName,
                         result.fileLocation,
                         SQLLITE_DIR,
+                        (tableName)? tableName : "predicted_data"
                     ]
             }
-
+            //console.log(options);
             PythonShell.run(pythonFileName, options, function (err, data) {
                 data = (data) ? data : { "empty": true }
                 console.log("python result", data)
-                if (err) this.controller.serverError(res);
+                if (err) {
+                    console.error(err);
+                    res.status(500);
+                    //res.json(err);
+                }
                 try {
                     res.status(200); // Found
                     res.json(data)
                 }
                 catch (ex) {
-                    this.controller.serverError(res)
+                    res.status(500);
+                    res.json(ex);
                 }
 
             });
