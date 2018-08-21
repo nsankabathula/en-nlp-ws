@@ -3,8 +3,8 @@ const PYTHON_FILE_DIR = "/home/paperspace/dev/sqllite-node/app/controller/";
 const SQLLITE_DIR = "/home/paperspace/dev/sqllite-node/app/data/";
 
 PythonShell.defaultOptions = {
-    //scriptPath: '/home/paperspace/dev/en-nlp/rcare'
-    scriptPath: 'C:\\Users\\nsankabathula\\dev\\jscript\\sqllite-node\\app\\controller\\'
+    scriptPath: '/home/paperspace/dev/en-nlp/rcare'
+    //scriptPath: 'C:\\Users\\nsankabathula\\dev\\jscript\\sqllite-node\\app\\controller\\'
 };
 
 class PythonController {
@@ -22,7 +22,7 @@ class PythonController {
     }
 
     tryExecutingPython(pythonFileName, res, result) {
-        console.log(result)
+        //console.log(result)
         return (result) => {
             var options = {
                 args:
