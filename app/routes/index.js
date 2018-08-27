@@ -21,7 +21,7 @@ module.exports = function (app, db) {
 
     commonDao = new CommonDao(db);
     commonController = new CommonController();
-    trainingDao = new TrainingDao(commonDao, "training_data");
+    trainingDao = new TrainingDao(commonDao, "training_features");
     predictionDao = new TrainingDao(commonDao, "predicted_data");
     metaDao = new MetaDao(commonDao)
     fileMetaDao = new FileMetaDataDao(commonDao);

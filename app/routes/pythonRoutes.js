@@ -9,7 +9,7 @@ module.exports = function (app, controller) {
     }
     )
 
-    app.post(defaultRoute + ":pythonFileName" + "/" + ":fileName", (req, res) => {
+    app.post(defaultRoute + ":pythonFileName" + "/" + ":fileName/:tableName", (req, res) => {
         controller.run(req, res);
     }
     )
