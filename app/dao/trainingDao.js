@@ -46,7 +46,7 @@ class TrainingDao {
 
     compare(fileName) {
 
-        const QUERY = "select t1.debug ,  t1.line_id, t1.target, t2.target predict \
+        const QUERY = "select t1.debug ,  t1.line_id, t1.target, t2.target predict, t2.probability \
                         from training_features t1 join predicted_data t2 on t1.line_id = t2.line_id and t1.name = t2.name \
                         where t1.name = $fileName order by t1.line_id asc"
         var sqlParams = { $fileName: fileName };
@@ -84,7 +84,7 @@ class TrainingDao {
     merge(fileName) {
         const defaultSqlParams = { $fileName: fileName };
         const QUERY = "UPDATE training_features SET target = (SELECT predicted_data.target FROM predicted_data \
-            WHERE  training_data.line_id = predicted_data.line_id and training_data.name = predicted_data.name)\
+            WHERE  training_features.line_id = predicted_data.line_id and training_features.name = predicted_data.name)\
             WHERE name = $fileName and 1 = 1 "
         return this.commonDao.run(QUERY, defaultSqlParams);
     }

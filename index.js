@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+var cors = require('cors');
 const app = express();
+
 
 const port = process.argv[2] || 8000;
 
@@ -8,7 +10,7 @@ const dbConfig = require('./app/db/');
 
 
 /* Express configuration */
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var server = app.listen(port, () => {
@@ -18,12 +20,13 @@ var server = app.listen(port, () => {
 
 
 });
-
+app.use(cors());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
     res.header("Content-Type", "application/json");
-    console.log(req.url, req.method);
+    console.log(req.url, req.method, req.body);
+    //console.log(req)
 
     next();
 })
