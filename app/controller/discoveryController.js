@@ -1,5 +1,5 @@
 
-const SERVER = "http://localhost:8000/meta/file/1/"
+const DISC_CONFIG = require("../data/discover.json")
 var request = require('request');
 
 class DiscoveryController {
@@ -10,7 +10,7 @@ class DiscoveryController {
     }
 
     get(req, res) {
-        console.log(SERVER);
+        console.log(DISC_CONFIG.SERVER);
         // Execute the HTTP Request
         request(SERVER, loaded);
 
