@@ -5,13 +5,14 @@ var request = require('request');
 class DiscoveryController {
 
     constructor(contoller) {
-        console.log("DiscoveryController")
+        console.log("Discovery Controller: ", DISC_CONFIG.SERVER)
         this.controller = contoller
     }
 
     get(req, res) {
-        console.log(DISC_CONFIG.SERVER);
+        
         // Execute the HTTP Request
+        const SERVER = DISC_CONFIG.SERVER;
         request(SERVER, loaded);
 
         // Callback for when the request is complete
