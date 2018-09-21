@@ -1,0 +1,8 @@
+version: '2'
+
+services: 
+  nlp-demo:
+   image: nsankabathula/sqllite-node:latest
+   container_name: sqllite-node-container
+   ports:
+     - 8000:8000
