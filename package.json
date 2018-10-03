@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
+  "private": true,
   "author": "Naveen",
   "license": "ISC",
   "dependencies": {
@@ -14,6 +15,7 @@
     "cors": "^2.8.4",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
+    "paperspace-node": "^0.1.10",
     "python-shell": "^0.5.0",
     "sqlite3": "^4.0.2"
   }
