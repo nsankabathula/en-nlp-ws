@@ -1,8 +1,7 @@
 const express = require('express');
-const filesConfig = require('./files.json');
-
+const env = require("../evnironment/environment");
 
 
 module.exports = {
-    files: express.static(filesConfig[0]["files"])
+    files: express.static(env.files.uri)
 };

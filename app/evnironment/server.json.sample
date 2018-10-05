@@ -1,0 +1,25 @@
+{
+    "configs": [
+        {
+            "name": "trainingdb",
+            "uri": "./app/data/training.db"
+        },
+        {
+            "name": "files",
+            "uri": "x"
+        },
+        {
+            "name": "couchdb",
+            "uri": "http://x:port"
+        },
+        {
+            "name": "paperspace",
+            "uri": null,
+            "apiKey": "x"
+        },
+        {
+            "name": "discover",
+            "uri": "http://localhost:4040/api/tunnels/"
+        }
+    ]
+}

@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var cors = require('cors');
+const proxy = require('express-http-proxy');
 const app = express();
 const path = require('path');
+const env = require("./app/evnironment/environment");
 
 
 const port = process.argv[2] || 8000;
@@ -13,6 +14,10 @@ const filesConfig = require('./app/files/');
 
 
 
+//console.log(env);
+
+var cors = require('cors');
+
 /* Express configuration */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -21,7 +26,8 @@ var server = app.listen(port, () => {
     console.log('RestAPI live on port ' + port);
 });
 app.use(cors());
-app.use('/files/', filesConfig.files);
+app.use('/files/', express.static(env.files.uri));
+app.use('/couchdb', proxy(env.couchdb.uri));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

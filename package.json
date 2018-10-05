@@ -15,6 +15,7 @@
     "cors": "^2.8.4",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
+    "express-http-proxy": "^1.4.0",
     "paperspace-node": "^0.1.10",
     "python-shell": "^0.5.0",
     "sqlite3": "^4.0.2"

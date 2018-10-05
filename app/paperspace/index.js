@@ -1,8 +1,8 @@
 const paperspace_node = require('paperspace-node')
-const apiKeys = require("./api.json")
+const env = require("../evnironment/environment");
 
 const ps = paperspace_node({
-    apiKey: apiKeys[0]["ps_api_token"]
+    apiKey: env.paperspace.apiKey
 })
 /*
 ps.machines.list(function (err, machines) {
