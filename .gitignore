@@ -3,6 +3,4 @@ node_modules
 package-lock.json
 *.log
 *.db.journal
-*api.json
-*db.json
-*files.json
+*server.json
