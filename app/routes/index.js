@@ -2,10 +2,13 @@ const MetaDataRoutes = require('./meta');
 const TrainingRoutes = require('./trainingRoutes');
 const PythonRoutes = require('./pythonRoutes');
 const FileMetaRoutes = require('./fileMetaRoutes');
-const DiscoveryRoutes = require('./discoveryRoutes');
+const CouchDbRoutes = require('./couchdbRoutes');
 
 const CommonDao = require('../core/commonDao');
 const CommonController = require('../core/commonController');
+const CouchDao = require('../core/couchDao');
+
+const TaggedDocDao = require('../dao/taggedDocDao')
 
 const TrainingDao = require('../dao/trainingDao');
 const TrainingController = require('../controller/trainingController');
@@ -18,13 +21,14 @@ const PythonController = require('../controller/pythonController');
 const FileMetaDataDao = require('../dao/fileMetaDataDao');
 const FileMetaController = require('../controller/fileMetaController');
 
-const DiscoveryController = require('../controller/discoveryController')
+//const DiscoveryController = require('../controller/discoveryController')
+
+const CouchDbController = require('../controller/couchDbContorller')
 
 
+module.exports = function (app, config) {
 
-module.exports = function (app, db) {
-
-    commonDao = new CommonDao(db);
+    commonDao = new CommonDao(config.db);
     commonController = new CommonController();
     trainingDao = new TrainingDao(commonDao, "training_features");
     predictionDao = new TrainingDao(commonDao, "predicted_data");
@@ -36,7 +40,10 @@ module.exports = function (app, db) {
     MetaDataRoutes(app, new MetaController(metaDao, commonController));
     PythonRoutes(app, new PythonController(fileMetaDao, commonController));
     FileMetaRoutes(app, new FileMetaController(fileMetaDao, commonController));
-    DiscoveryRoutes(app, new DiscoveryController(commonController));
+
+    CouchDbRoutes(app, new CouchDbController(new CouchDao(config.nano, "file-metadata"), commonController), "file-metadata")
+    CouchDbRoutes(app, new CouchDbController(new TaggedDocDao(config.nano, "nlp"), commonController), "nlp")
+
     //adminRoutes(app, db);
     // Other route groups could go here, in the future
 };

@@ -4,6 +4,7 @@ const proxy = require('express-http-proxy');
 const app = express();
 const path = require('path');
 const env = require("./app/evnironment/environment");
+const nano = require("nano")(env.couchdb.uri)
 
 
 const port = process.argv[2] || 8000;
@@ -39,4 +40,4 @@ app.use((req, res, next) => {
 
 
 
-require('./app/routes')(app, dbConfig.db);
+require('./app/routes')(app, { db: dbConfig.db, nano: nano });
