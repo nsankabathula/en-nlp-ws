@@ -41,8 +41,7 @@ module.exports = function (app, config) {
     PythonRoutes(app, new PythonController(fileMetaDao, commonController));
     FileMetaRoutes(app, new FileMetaController(fileMetaDao, commonController));
 
-    CouchDbRoutes(app, new CouchDbController(new CouchDao(config.nano, "file-metadata"), commonController), "file-metadata")
-    CouchDbRoutes(app, new CouchDbController(new TaggedDocDao(config.nano, "nlp"), commonController), "nlp")
+    CouchDbRoutes(app, new CouchDbController(new CouchDao(config.nano, "not-used"), commonController))
 
     //adminRoutes(app, db);
     // Other route groups could go here, in the future

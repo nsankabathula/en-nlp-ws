@@ -9,6 +9,18 @@ class TaggedDocDao extends CouchDao {
 
     }
 
+    view(params) {
+        console.log(params)
+        return super.view(
+            { designName: "config", viewName: "config-view" }
+        ).then(
+            result => {
+                return result
+            }
+            )
+    }
+
+
 
 
     find(params) {
@@ -59,7 +71,7 @@ class TaggedDocDao extends CouchDao {
             result => {
                 return { bookmark: result.bookmark, docs: result.docs };
             }
-        )
+            )
     }
 }
 

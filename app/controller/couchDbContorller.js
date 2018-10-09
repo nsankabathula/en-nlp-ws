@@ -1,3 +1,4 @@
+
 class CouchDBContoller {
 
     constructor(dao, contoller) {
@@ -5,9 +6,26 @@ class CouchDBContoller {
         this.controller = contoller
     }
 
-    all(req, res) {
+    buildParams(req) {
+
+        return {
+            db: req.params.db,
+            body: req.body,
+            params: req.params
+        }
+    }
+
+    docs(req, res) {
         let that = this;
-        that.dao.all()
+        that.dao.docs(that.buildParams(req))
+            .then(that.controller.findSuccess(res))
+            .catch(that.controller.findError(res));
+
+    }
+
+    view(req, res) {
+        let that = this;
+        that.dao.view(that.buildParams(req))
             .then(that.controller.findSuccess(res))
             .catch(that.controller.findError(res));
 
@@ -15,7 +33,7 @@ class CouchDBContoller {
 
     find(req, res) {
         let that = this;
-        that.dao.find(req.body)
+        that.dao.find(that.buildParams(req))
             .then(that.controller.findSuccess(res))
             .catch(that.controller.findError(res));
     }
@@ -24,7 +42,7 @@ class CouchDBContoller {
 
     findOne(req, res) {
         let that = this;
-        that.dao.findOne(req.body)
+        that.dao.findOne(that.buildParams(req))
             .then(that.controller.findSuccess(res))
             .catch(that.controller.findError(res));
 

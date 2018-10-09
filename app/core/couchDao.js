@@ -1,24 +1,60 @@
 const DaoError = require('./daoError');
 const request = require("request");
 
+const COUCHDB_VIEW_DICT = {
+    config: { designName: "config", viewName: "config-view" },
+    master: { designName: "metadata", viewName: "master-view" },
+    meta: { designName: "metadata", viewName: "meta-view" },
+    sents: { designName: "sentences", viewName: "sent-view" },
+    target: { designName: "sentences", viewName: "target" },
+}
+
 class CouchDao {
 
     constructor(nano, dbName) {
         console.debug("CouchDao constructor");
         this.nano = nano
-        this.couchDb = nano.use(dbName);
 
     }
 
-    all() {
+    view(req) {
         let that = this;
+        const couchDb = that.nano.use(req.db);
+        const params = req.params;
+        const view = COUCHDB_VIEW_DICT[params.view]
+
         return new Promise(function (resolve, reject) {
-            console.log(that)
-            that.couchDb.list({ include_docs: true }, function (err, result, header) {
+            couchDb.view(view.designName, view.viewName, { include_docs: true },
+                function (err, result, header) {
+                    if (err) {
+                        console.error(err);
+                        reject(
+                            new DaoError(20, "CouchDao Internal server error db: " + couchDb.config.db, view.designName, view.viewName)
+                        );
+                    } else if (result === null || result.rows === null) {
+                        reject(
+                            new DaoError(21, "View might be empty", couchDb.config, view.designName, view.viewName)
+                        );
+                    } else {
+                        //console.log("all", result)
+
+
+                        resolve(result);
+                    }
+                })
+        });
+    }
+
+    docs(req) {
+        let that = this;
+        const couchDb = that.nano.use(req.db);
+        const params = req.params;
+        return new Promise(function (resolve, reject) {
+            couchDb.list({ include_docs: true }, function (err, result, header) {
                 if (err) {
                     console.error(err);
                     reject(
-                        new DaoError(20, "Internal server error")
+                        new DaoError(20, "CouchDao Internal server error db: " + couchDb.config.db)
                     );
                 } else if (result === null || result.rows === null) {
                     reject(
@@ -37,40 +73,21 @@ class CouchDao {
         });
     }
 
-    bulk(docs) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            console.log("bulk", docs);
-            that.couchDb.bulk({ docs: docs }, function (err, result, header) {
-                if (err) {
-                    console.error(err);
-                    reject(
-                        new DaoError(20, "Internal server error")
-                    );
-                } else if (result === null || result.length === 0) {
-                    reject(
-                        new DaoError(21, "Entity not found ")
-                    );
-                } else {
-                    resolve(result);
-                }
-            })
-        });
-    }
 
-    find(query) {
-        //console.log(sqlRequest, sqlParams);
+
+    find(req) {
         let that = this;
+        const couchDb = that.nano.use(req.db);
+        const query = req.body;
         return new Promise(function (resolve, reject) {
 
-            that.couchDb.find(query, function (err, rows) {
+            couchDb.find(query, function (err, rows) {
                 if (err) {
                     console.log(err)
                     reject(
-                        new DaoError(11, "Invalid arguments", query)
+                        new DaoError(20, "CouchDao Internal server error db: " + couchDb.config.db, query)
                     );
                 } else if (rows === null || rows.length === 0) {
-                    console.log("Entity not found");
                     reject(
                         new DaoError(21, "Entity not found ", query)
                     );
@@ -80,56 +97,6 @@ class CouchDao {
             })
         });
     }
-
-    findOne(sqlRequest, sqlParams) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            let stmt = that.couchDb.prepare(sqlRequest);
-            stmt.all(sqlParams, function (err, rows) {
-                //console.debug(err, rows)
-                if (err) {
-                    reject(
-                        new DaoError(11, "Invalid arguments", sqlRequest, sqlParams)
-                    );
-                } else if (rows === null || rows.length === 0) {
-                    reject(
-                        new DaoError(21, "Entity not found ", sqlRequest, sqlParams)
-                    );
-                } else {
-                    //console.debug(rows)
-                    let row = rows[0];
-                    resolve(row);
-                }
-            })
-        });
-    }
-
-
-
-    run(sqlRequest, sqlParams) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-
-            let stmt = that.couchDb.prepare(sqlRequest);
-            stmt.run(sqlParams, function (err) {
-                //console.log(this);
-                if (this.changes > 0) {
-                    resolve(sqlParams);
-                } else if (this.changes === 0) {
-                    reject(
-                        new DaoError(21, "Entity not found", sqlRequest, sqlParams)
-                    )
-                } else {
-                    console.log(err);
-                    reject(
-                        new DaoError(11, "Invalid arguments", sqlRequest, sqlParams)
-                    )
-                }
-            })
-        });
-    }
-
-
 
 
 
