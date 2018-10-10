@@ -7,7 +7,7 @@ const env = require("./environment/environment");
 
 const nano = require("nano")(env.couchdb.uri)
 const port = process.argv[2] || 8000;
-const dbConfig = require('./app/db/');
+//const dbConfig = require('./app/db/');
 const psConfig = require('./app/paperspace/');
 const filesConfig = require('./app/files/');
 
@@ -39,4 +39,4 @@ app.use((req, res, next) => {
 
 
 
-require('./app/routes')(app, { db: dbConfig.db, nano: nano });
+require('./app/routes')(app, { db: null, nano: nano });

@@ -28,18 +28,18 @@ const CouchDbController = require('../controller/couchDbContorller')
 
 module.exports = function (app, config) {
 
-    commonDao = new CommonDao(config.db);
+    //commonDao = new CommonDao(config.db);
     commonController = new CommonController();
-    trainingDao = new TrainingDao(commonDao, "training_features");
-    predictionDao = new TrainingDao(commonDao, "predicted_data");
-    metaDao = new MetaDao(commonDao)
-    fileMetaDao = new FileMetaDataDao(commonDao);
+    //trainingDao = new TrainingDao(commonDao, "training_features");
+    //predictionDao = new TrainingDao(commonDao, "predicted_data");
+    //metaDao = new MetaDao(commonDao)
+    //fileMetaDao = new FileMetaDataDao(commonDao);
 
-    TrainingRoutes(app, new TrainingController(trainingDao, commonController), "training");
-    TrainingRoutes(app, new TrainingController(predictionDao, commonController), "prediction");
-    MetaDataRoutes(app, new MetaController(metaDao, commonController));
-    PythonRoutes(app, new PythonController(fileMetaDao, commonController));
-    FileMetaRoutes(app, new FileMetaController(fileMetaDao, commonController));
+    //TrainingRoutes(app, new TrainingController(trainingDao, commonController), "training");
+    //TrainingRoutes(app, new TrainingController(predictionDao, commonController), "prediction");
+    //MetaDataRoutes(app, new MetaController(metaDao, commonController));
+    //PythonRoutes(app, new PythonController(fileMetaDao, commonController));
+    //FileMetaRoutes(app, new FileMetaController(fileMetaDao, commonController));
 
     CouchDbRoutes(app, new CouchDbController(new CouchDao(config.nano, "not-used"), commonController))
 
