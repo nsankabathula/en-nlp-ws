@@ -1,12 +1,22 @@
 const DaoError = require('./daoError');
 const request = require("request");
 
+const attachments = function (couchDb, params, result) {
+    const rows = result.rows.map((row) => {
+        row.value.url = couchDb.config.url + "/" + couchDb.config.db + "/" + row.value.url
+        return row.value
+    })
+
+
+    result.rows = [].concat(rows)
+    return result;
+}
 const COUCHDB_VIEW_DICT = {
-    config: { designName: "config", viewName: "config-view" },
-    master: { designName: "metadata", viewName: "master-view" },
-    meta: { designName: "metadata", viewName: "meta-view" },
-    sents: { designName: "sentences", viewName: "sent-view" },
-    target: { designName: "sentences", viewName: "target" },
+    config: { designName: "config", viewName: "config-view", transform: null, opts: { include_docs: true } },
+    master: { designName: "metadata", viewName: "master-view", transform: null, opts: { include_docs: true } },
+    attachments: { designName: "metadata", viewName: "meta-view", transform: attachments, opts: { include_docs: false } },
+    sents: { designName: "sentences", viewName: "sent-view", transform: null, opts: { include_docs: true } },
+    target: { designName: "sentences", viewName: "target", transform: null, opts: { include_docs: true } }
 }
 
 class CouchDao {
@@ -24,7 +34,7 @@ class CouchDao {
         const view = COUCHDB_VIEW_DICT[params.view]
 
         return new Promise(function (resolve, reject) {
-            couchDb.view(view.designName, view.viewName, { include_docs: true },
+            couchDb.view(view.designName, view.viewName, view.opts,
                 function (err, result, header) {
                     if (err) {
                         console.error(err);
@@ -36,8 +46,9 @@ class CouchDao {
                             new DaoError(21, "View might be empty", couchDb.config, view.designName, view.viewName)
                         );
                     } else {
-                        //console.log("all", result)
-
+                        if (view.transform) {
+                            result = view.transform(couchDb, params, result, req)
+                        }
 
                         resolve(result);
                     }

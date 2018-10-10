@@ -14,6 +14,7 @@ module.exports = function (app, controller) {
         controller.find(req, res);
     });
 
+
     app.get(defaultRoute + ":view/", (req, res) => {
         controller.view(req, res);
     });
