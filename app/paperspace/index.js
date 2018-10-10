@@ -1,5 +1,5 @@
 const paperspace_node = require('paperspace-node')
-const env = require("../evnironment/environment");
+const env = require("../../environment/environment");
 
 const ps = paperspace_node({
     apiKey: env.paperspace.apiKey

@@ -1,5 +1,5 @@
 let sqlite3 = require('sqlite3').verbose();
-const env = require("../evnironment/environment");
+const env = require("../../environment/environment");
 /*
  * Database configuration
  */

@@ -1,5 +1,5 @@
 const express = require('express');
-const env = require("../evnironment/environment");
+const env = require("../../environment/environment");
 
 
 module.exports = {

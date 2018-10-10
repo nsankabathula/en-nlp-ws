@@ -1,14 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const proxy = require('express-http-proxy');
-const app = express();
 const path = require('path');
-const env = require("./app/evnironment/environment");
+
+const env = require("./environment/environment");
+
 const nano = require("nano")(env.couchdb.uri)
-
-
 const port = process.argv[2] || 8000;
-
 const dbConfig = require('./app/db/');
 const psConfig = require('./app/paperspace/');
 const filesConfig = require('./app/files/');
@@ -18,6 +16,7 @@ const filesConfig = require('./app/files/');
 //console.log(env);
 
 var cors = require('cors');
+const app = express();
 
 /* Express configuration */
 app.use(bodyParser.urlencoded({ extended: true }));
